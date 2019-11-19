@@ -10,11 +10,9 @@ const findByUserID = id => {
 };
 
 const add = recipe => {
-    console.log('in the post request',recipe);
     return db('recipes')
         .insert(recipe, 'id')
         .then((id) => {
-            console.log('id', id);
             return id
         });
 };

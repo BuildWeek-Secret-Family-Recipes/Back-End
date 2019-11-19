@@ -5,6 +5,7 @@ const generateToken = require('../config/generateToken');
 
 const router = express.Router();
 
+
 router.get('/', (req, res) => {
     res.status(200).json({message: "All Clear For Takeoff, Star Fox"})
 });
