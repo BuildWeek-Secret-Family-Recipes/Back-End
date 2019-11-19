@@ -1,0 +1,23 @@
+
+exports.up = function(knex, Promise) {
+  return knex.schema.createTable('users', user => {
+    user.increments();
+
+    user
+    .string('username', 32)
+    .notNullable()
+    .unique();
+    
+    user
+    .string('password', 128)
+    .notNullable()
+
+    user
+    .string('email', 128)
+    .notNullable()
+  });
+};
+
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTableIfExists('users');
+};
