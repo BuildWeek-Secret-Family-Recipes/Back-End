@@ -5,6 +5,7 @@ const userAuthRouter = require('./auth/auth-user-router');
 const usersRouter = require('./users/users-router');
 const recipeRouter = require('./recipes/recipes-router');
 const restricted = require('./middleware/restricted');
+const IngredientsRouter = require('./ingredients/ingredients-router');
 
 
 
@@ -23,6 +24,9 @@ server.use('/api/auth/users', usersRouter);
 
 //GET/ADD recipe
 server.use('/api/recipes', restricted, recipeRouter);
+
+//Ingredients
+server.use('/api/auth/ingredients', restricted, IngredientsRouter )
 
 server.get('/', (req, res) => {
     res.status(200).json({message: "All Clear For Takeoff, Star Fox"})
