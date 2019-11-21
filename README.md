@@ -1,6 +1,6 @@
 # Secret-Recipes Documentation
 
-## Base URL =
+## Base URL = "https://secret-recipes.herokuapp.com"
 
 
 ### Users
