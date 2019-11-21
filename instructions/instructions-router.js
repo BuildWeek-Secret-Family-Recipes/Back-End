@@ -1,13 +1,12 @@
 const express = require('express');
-const Recipes = require('./recipes-model');
+const Instructions = require('./instructions-model');
 const jwt = require('jsonwebtoken');
 const secrets = require('../config/secrets');
-const checkRecipeData = require('../middleware/checkRecipeData');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    Recipes.find()
+    Instructions.find()
         .then(response => {
             res.status(200).json(response);
         })
@@ -16,11 +15,11 @@ router.get('/', (req, res) => {
         });
 });
 
-router.get('/user', (req, res) => {
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
     let token = req.headers.authorization;
     let decoded = jwt.verify(token, secrets.jwtSecret);
-    console.log(decoded);
-    Recipes.findByUserID(decoded.subject)
+    Instructions.findByRecipeID(id)
         .then(response => {
             res.status(200).json(response);
         })
@@ -29,13 +28,12 @@ router.get('/user', (req, res) => {
         });
 });
 
-router.post('/', checkRecipeData, (req, res) => {
+router.post('/', (req, res) => {
     let token = req.headers.authorization;
     let decoded = jwt.verify(token, secrets.jwtSecret);
-    let recipe = req.body;
+    let instruction = req.body;
 
-    recipe.user_id = decoded.subject;
-    Recipes.add(recipe)
+    Instructions.add(instruction)
         .then(response => {
             res.status(201).json(response);
         })
@@ -44,8 +42,8 @@ router.post('/', checkRecipeData, (req, res) => {
         })
 });
 
-router.put('/:id', checkRecipeData, (req, res) => {
-    Recipes.update(req.params.id, req.body)
+router.put('/:id', (req, res) => {
+    Instructions.update(req.params.id, req.body)
         .then(response => {
             res.status(200).json(response);
         })
@@ -55,9 +53,9 @@ router.put('/:id', checkRecipeData, (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    Recipes.remove(req.params.id)
+    Instructions.remove(req.params.id)
         .then(response => {
-            res.status(200).json({response: response, message: 'Recipe successfully deleted'});
+            res.status(200).json({response: response, message: 'instruction successfully deleted'});
         })
         .catch(error => {
             res.status(500).json({message : 'server error', error: error })
