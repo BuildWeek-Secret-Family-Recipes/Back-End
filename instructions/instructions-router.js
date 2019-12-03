@@ -44,8 +44,14 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
     Instructions.update(req.params.id, req.body)
-        .then(response => {
-            res.status(200).json(response);
+        .then(() => {
+            Instructions.findByRecipeID(req.params.id)
+            .then(response => {
+                res.status(200).json(response);
+            })
+            .catch(error => {
+                res.status(500).json('server error, let me know');
+            });
         })
         .catch(error => {
             res.status(500).json({message : 'server error', error: error });

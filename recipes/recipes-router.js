@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
 router.get('/user', (req, res) => {
     let token = req.headers.authorization;
     let decoded = jwt.verify(token, secrets.jwtSecret);
-    console.log(decoded);
     Recipes.findByUserID(decoded.subject)
         .then(response => {
             res.status(200).json(response);
@@ -28,6 +27,17 @@ router.get('/user', (req, res) => {
             res.status(500).json('server error, let me know');
         });
 });
+
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    Recipes.findByRecipeID(id)
+        .then(response => {
+            res.status(200).json(response);
+        })
+        .catch(error => {
+            res.status(500).json("server error. let me know");
+        });
+})
 
 router.post('/', checkRecipeData, (req, res) => {
     let token = req.headers.authorization;
@@ -46,9 +56,15 @@ router.post('/', checkRecipeData, (req, res) => {
 
 router.put('/:id', checkRecipeData, (req, res) => {
     Recipes.update(req.params.id, req.body)
-        .then(response => {
+        .then(
+            Recipes.findByRecipeID(req.params.id)
+                .then(response => {
             res.status(200).json(response);
-        })
+            })
+            .catch(error => {
+                res.status(500).json({message: "server error. let me know loooooool", error: error});
+            })
+        )
         .catch(error => {
             res.status(500).json({message : 'server error', error: error });
         });
