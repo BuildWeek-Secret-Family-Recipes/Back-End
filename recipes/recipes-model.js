@@ -1,8 +1,15 @@
 const db = require('../data/dbConfig');
 
 const find = () => {
-    return db('recipes');
+    return db('recipes')
+    ;
 };
+
+const findByRecipeID = id => {
+    return db('recipes')
+        .where({id: id})
+        ;
+}
 
 const findByUserID = id => {
     return db('recipes')
@@ -32,6 +39,7 @@ const update = (id, recipe) => {
 
 module.exports = {
     find,
+    findByRecipeID,
     findByUserID,
     add,
     remove,

@@ -17,4 +17,10 @@ describe('user-model', () => {
         let user = await db('users').first();
         expect(user).toEqual(userObject);
     })
-})
+
+    it('should log in new user', async () => {
+        await db('users').insert(userObject)
+        let user = await db('users').first();
+        expect(user).toEqual(userObject);
+    })
+});
